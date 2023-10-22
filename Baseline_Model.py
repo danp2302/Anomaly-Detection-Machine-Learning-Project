@@ -1,3 +1,7 @@
+from keras.src.layers.attention.multi_head_attention import activation
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
 
 import cv2
 import numpy as np
