@@ -1,8 +1,4 @@
 from keras.src.layers.attention.multi_head_attention import activation
-# This Python 3 environment comes with many helpful analytics libraries installed
-# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
-# For example, here's several helpful packages to load
-
 import cv2
 import numpy as np
 from keras.models import Sequential
@@ -21,10 +17,11 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-segments=np.load('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/segments.npy', allow_pickle=True)
-labels=np.load('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/labels.npy', allow_pickle=True)
-test_segments=np.load('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/test_segments.npy', allow_pickle=True)
-test_labels=np.load('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/test_labels.npy', allow_pickle=True)
+#load the arrays created in the frame extarction function
+segments=np.load('/path-to-save-video/segments.npy/segments.npy', allow_pickle=True)
+labels=np.load('/path-to-save-video/labels.npy/labels.npy', allow_pickle=True)
+test_segments=np.load('/path-to-save-video/test_segments.npy', allow_pickle=True)
+test_labels=np.load('/path-to-save-video/test_labels.npy', allow_pickle=True)
 
 num_segments, frames_per_segment, height, width=segments.shape
 
@@ -39,29 +36,18 @@ model.add(Flatten())
 model.add(Dense(64, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 
+#output model summary
 model.summary()
 
+#complie model
 model.compile(optimizer='adam',
               loss='binary_crossentropy',
               metrics=['accuracy'])
 
+#fit the model
 history = model.fit(segments, labels, epochs=10, batch_size=32,
                     validation_split=0.2)
 
-plt.plot(history.history['accuracy'], label='accuracy')
-plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0.5, 1])
-plt.legend(loc='lower right')
-
-
-
-loss, acc=model.evaluate(test_segments, test_labels)
-print("loss", loss)
-print("accuracy", acc)
-
-predictions=model.predict(test_segments)
 
 # summarize history for accuracy
 plt.plot(history.history['accuracy'])
@@ -81,12 +67,15 @@ plt.xlabel('epoch')
 plt.legend(['Train', 'Validation'], loc='upper left')
 plt.show()
 
+#evaluate on testing data and print out the test loss and test accuracy 
 test_loss, test_acc=model.evaluate(test_segments, test_labels)
 print("test loss",test_loss)
 print("test accuracy",test_acc)
 
+#run test data on the model to get predictions
 predictions=model.predict(test_segments)
 
+#arrange into classes of 0 or 1 (normal or shoplifting)
 pred_labels=[]
 for i, predicted in enumerate(predictions):
     if predicted[0] > 0.5:
@@ -94,10 +83,12 @@ for i, predicted in enumerate(predictions):
     else:
         pred_labels.append(0)
 
+#show predictions in confusion matrix
 cm = confusion_matrix(test_labels, pred_labels)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm)
 disp.plot()
 plt.show()
 
+#create and print classification report
 labels = ['Normal', 'Shoplifting']
 print(classification_report(test_labels, pred_labels, target_names=labels))
