@@ -3,7 +3,7 @@ A project which classifies video segments as 'normal' or 'anomalous' (shopliftin
 
 To run the code, you first of all need to go to the frame extraction and segmentation file. 
 Update the path directory for the videos so it matches your storage, the path takes in mp4 videos not individual frames so the videos need to be inside these folders
-# Path to your video file
+
 shoplifting_training_videos = '/path_to_my_google_drive'
 normal_training_videos = '/path_to_my_google_drive'
 shoplifting_testing_videos = '/path_to_my_google_drive'
