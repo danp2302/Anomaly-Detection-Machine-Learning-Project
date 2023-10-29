@@ -74,7 +74,7 @@ def segment_creator(directory_path):
 
     return segments_per_video_array, labels_per_video_array
 
-# Call the segment_creator function for the desired directories
+# Call the segment_creator function for the desired directories, concatenate 
 segments_per_video_1, labels_per_video_1 = segment_creator(shoplifting_training_videos) 
 segments_per_video_2, labels_per_video_2 = segment_creator(normal_training_videos)
 segments=np.concatenate((segments_per_video_1, segments_per_video_2), axis=0)
@@ -85,7 +85,8 @@ testing_segments_per_video_2, testing_labels_per_video_2 = segment_creator(norma
 test_segments=np.concatenate((testing_segments_per_video_1, testing_segments_per_video_2), axis=0)
 test_labels=np.concatenate((testing_labels_per_video_1, testing_labels_per_video_2), axis=0)
 
-np.save('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/segments.npy', segments)
-np.save('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/labels.npy', labels)
-np.save('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/test_segments.npy', test_segments)
-np.save('/content/drive/MyDrive/UCF/10_videos/cv_frames/cv_frames_shoplifting/test_labels.npy', test_labels)
+#save as np array
+np.save('/path-to-save-video/segments.npy', segments)
+np.save('/path-to-save-video/labels.npy', labels)
+np.save('/path-to-save-video/test_segments.npy', test_segments)
+np.save('/path-to-save-video/test_labels.npy', test_labels)
